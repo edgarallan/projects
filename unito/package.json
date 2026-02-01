@@ -1,0 +1,19 @@
+{
+  "name": "unito-scripts-workspace",
+  "version": "1.0.0",
+  "description": "Centralizzato per la gestione dei Google Apps Script dell'Università di Torino",
+  "scripts": {
+    "push:primarie": "cd Adesione_primarie_script && clasp push",
+    "pull:primarie": "cd Adesione_primarie_script && clasp pull",
+    "status:primarie": "cd Adesione_primarie_script && clasp status",
+    "push:secondarie": "cd Adesione_secondarie_script && clasp push",
+    "pull:secondarie": "cd Adesione_secondarie_script && clasp pull",
+    "status:secondarie": "cd Adesione_secondarie_script && clasp status",
+    "push:dates-primarie": "cd Date_ricercatori_primarie_script && clasp push",
+    "push:dates-secondarie": "cd Date_ricercatori_secondarie_script && clasp push",
+    "push:lab": "cd Lab_unito_2025_script && clasp push",
+    "status:all": "npm run status:primarie && npm run status:secondarie"
+  },
+  "author": "",
+  "license": "ISC"
+}

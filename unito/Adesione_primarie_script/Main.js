@@ -25,6 +25,7 @@ function onOpen() {
     .addSeparator()
     .addItem('[Admin] 1. Ricarica da File', 'uiRepopulatePrimarie')
     .addItem('[Admin] 2. Popola IDs ', 'uiPopulateFirebaseIds_Primarie')
+    .addItem('[Admin] 3. Ripara Assegnazioni (Ghost)', 'uiRepairAssignments_Primarie')
     //.addItem('PERICOLOSO: Ricarica SECONDARIE da File', 'uiRepopulateSecondarie')
     .addToUi();
 }
@@ -280,6 +281,13 @@ function uiRunMatchingPrimarie() {
     Logger.log(`🛑 ERRORE CRITICO nel processo completo (PRIMARIE): ${e.toString()}\nStack: ${e.stack}`);
     ui.alert(`Si è verificato un errore critico: ${e.message}. Controllare i log.`);
   }
+}
+
+/**
+ * Wrapper UI per riparare le assegnazioni "Ghost" (nel foglio ma non FB).
+ */
+function uiRepairAssignments_Primarie() {
+  RepairDataService.repairAssignmentsFromSheet();
 }
 
 /**

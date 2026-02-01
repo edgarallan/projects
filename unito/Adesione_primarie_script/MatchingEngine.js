@@ -383,10 +383,15 @@ var MatchingEngine = (function() {
 
     for (const rawDate of availableDatesRaw) {
       const normalizedDate = Utilities_.cleanDateString(rawDate);
-      if (normalizedDate && !excludedDatesSet.has(normalizedDate)) {
-        dateToAssignRaw = rawDate;
-        break;
+      if (!normalizedDate) {
+        Logger.log(`      [DATE] Data non valida: "${rawDate}" per lab "${labName}"`);
+        continue;
       }
+      if (excludedDatesSet.has(normalizedDate)) {
+        continue;
+      }
+      dateToAssignRaw = rawDate;
+      break;
     }
 
     if (!dateToAssignRaw) return null;
@@ -508,13 +513,17 @@ var MatchingEngine = (function() {
     // FASE B
     highDemandLabs.forEach(labName => {
         const labData = laboratori[labName];
+        Logger.log(`[FASE B] Processo Lab alta domanda: "${labName}" (${labData.slotDisponibili} slot)`);
         while (labData.slotDisponibili > 0) {
             const candidates = requests
                 .filter(r => r.labRichiesto === labName && !assignedClasses.has(r.id))
                 .map(r => ({ ...r, score: _calculateScore(r, equityCounters, false) }))
                 .sort((a, b) => b.score - a.score);
             
-            if (candidates.length === 0) break;
+            if (candidates.length === 0) {
+                Logger.log(`   [SKIP] Nessun candidato rimasto per "${labName}"`);
+                break;
+            }
             
             let assigned = false;
             for (const candidate of candidates) {
@@ -524,10 +533,12 @@ var MatchingEngine = (function() {
                 
                 const slot = _consumeNextAvailableSlot(labName, labData, excluded, candidate.id);
                 if (slot) {
-                    // FIX: Passo il labName attuale del ciclo
+                    Logger.log(`   [MATCH] ${candidate.id} (${candidate.email}) -> ${labName} il ${slot} (Score: ${candidate.score.toFixed(0)})`);
                     _finalizeAssignment(candidate, labData, slot, 'Alta Domanda', assignments, assignedClasses, equityCounters, labName);
                     assigned = true;
                     break; 
+                } else {
+                    Logger.log(`   [FAIL] ${candidate.id} (${candidate.email}) scartato per mancanza date non escluse (Escluse: ${excluded.size})`);
                 }
             }
             if (!assigned) break;
@@ -657,6 +668,11 @@ var MatchingEngine = (function() {
     
     const emailCount = counters.emailAssignmentCount[req.email] || 0;
     score += Math.max(0, W.EMAIL_EQUITY_MULTIPLIER - emailCount) * 100;
+
+    // Penalità per email che hanno già raggiunto il massimo (o quasi)
+    if (emailCount >= 1) {
+        score -= W.EMAIL_MAX_ASSIGNMENTS_PENALTY * emailCount;
+    }
     
     if (isExtra) {
         score *= W.BONUS_MULTIPLIER;

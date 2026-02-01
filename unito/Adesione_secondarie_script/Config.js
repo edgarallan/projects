@@ -38,7 +38,7 @@ const CONFIG = {
   
   // Nomi dei file "Adesioni" (Destinazione)
   ADESIONI_PRIMARIE_FILENAME: 'Adesione a _Un giorno all_università_ 25-26  - PRIMARIE (Risposte)',
-  ADESIONI_SECONDARIE_FILENAME: 'AAdesione a _Un giorno all_università_ 25-26  - SECONDO GRADO (Risposte)',
+  ADESIONI_SECONDARIE_FILENAME: 'Adesione a _Un giorno all_università_ 25-26  - SECONDO GRADO (Risposte)',
   ADESIONI_COLUMNS_TO_UPDATE: [
     'Proposta accettata',
     'Nome laboratorio proposto/accettato',
@@ -85,10 +85,10 @@ const CONFIG = {
     INSTITUTE_EQUITY_BASE_WEIGHT: 1500,
     INSTITUTE_EQUITY_MULTIPLIER: 10.0,
     EMAIL_EQUITY_MULTIPLIER: 1.0,
-    EMAIL_MAX_ASSIGNMENTS_PENALTY: 50000,
+    EMAIL_MAX_ASSIGNMENTS_PENALTY: 10000,
     LAB_POPULARITY_PENALTY_WEIGHT: 500,
     REQUEST_PRIORITY_WEIGHT: 100,
-    CIRC_VARIETY_PENALTY_WEIGHT: 40000,
+    CIRC_VARIETY_PENALTY_WEIGHT: 5000,
     BONUS_MULTIPLIER: 1.0,
     PENALTY_MULTIPLIER: 0.5,
   }

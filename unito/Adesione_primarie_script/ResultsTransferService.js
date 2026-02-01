@@ -111,7 +111,7 @@ var ResultsTransferService = (function() {
     const dataA = Object.values(datiAssegnazioni);
     const mappa = {};
     dataA.forEach(row => {
-      const id = row.id;
+      const id = String(row.id || '').trim();
       if (id) {
         let dataText = String(row.dataAssegnata || '');
         if (dataText.startsWith("'")) {
@@ -170,7 +170,7 @@ var ResultsTransferService = (function() {
 
       // Iteriamo su ogni riga del foglio
       for (let i = 0; i < sheetIds.length; i++) {
-        const fid = sheetIds[i];
+        let fid = String(sheetIds[i] || '').trim();
         
         // Se abbiamo dati nuovi per questo ID
         if (mappa[fid]) {
@@ -215,6 +215,7 @@ var ResultsTransferService = (function() {
 
       // Se la colonna ha subito modifiche, scriviamo SOLO quella colonna
       if (colModified) {
+        colRange.setDataValidation(null); // NUOVO: Rimuove vincoli di convalida che bloccano la scrittura
         colRange.setValues(colValues);
       }
     });

@@ -23,9 +23,10 @@ function onOpen() {
     .addItem('Aggiungi le nuove richieste', 'uiSyncNewRequests_Secondarie') // <--- NUOVO
     //.addItem('[Admin] Sync NUOVE Righe (Secondarie)', 'uiSyncNewRequests_Secondarie') // <--- NUOVO
     .addSeparator()
+    .addSeparator()
     .addItem('[Admin] 1. Ricarica da File', 'uiRepopulateSecondarie')
     .addItem('[Admin] 2. Popola IDs ', 'uiPopulateFirebaseIds_Secondarie')
-    //.addItem('PERICOLOSO: Ricarica SECONDARIE da File', 'uiRepopulateSecondarie')
+    .addItem('[Admin] 3. Ripara Assegnazioni (Ghost)', 'uiRepairAssignments_Secondarie')
     .addToUi();
 }
 
@@ -338,4 +339,11 @@ function uiSyncNewRequests_Secondarie() {
     Logger.log(`ERRORE in uiSyncNewRequests_Secondarie: ${e.toString()}\n${e.stack}`);
     ui.alert(`Errore: ${e.message}`);
   }
+}
+
+/**
+ * Wrapper UI per riparare le assegnazioni "Ghost" (nel foglio ma non FB).
+ */
+function uiRepairAssignments_Secondarie() {
+  RepairDataService.repairAssignmentsFromSheet();
 }
